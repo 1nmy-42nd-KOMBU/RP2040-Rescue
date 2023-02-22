@@ -1,7 +1,8 @@
+#include <Arduino.h>
 //
 // 3桁の7セグメントLEDを光らせるプログラム
 //
-int num_3digits = 256;
+int num_3digits = 128;
 
 void setup(){
     Serial.begin(115200);
