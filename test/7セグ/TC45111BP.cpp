@@ -2,7 +2,7 @@
 //
 // 3桁の7セグメントLEDを光らせるプログラム
 //
-int num_3digits = 256;
+int num_3digits = 769;
 
 void setup(){
     Serial.begin(115200);
@@ -57,19 +57,19 @@ void loop(){
     digitalWrite(11,HIGH);
     digitalWrite(12,LOW);
     NumPrint(num_3digits / 100);
-    digitalWrite(13,LOW);　// clear
+    digitalWrite(13,LOW); // clear
 
     // 2桁目
     digitalWrite(10,HIGH);
     digitalWrite(11,LOW);
     digitalWrite(12,HIGH);
     NumPrint(num_3digits % 100 / 10);
-    digitalWrite(13,LOW);　// clear
+    digitalWrite(13,LOW);// clear
 
     // 1桁目
     digitalWrite(10,LOW);
     digitalWrite(11,HIGH);
     digitalWrite(12,HIGH);
     NumPrint(num_3digits % 10);
-    digitalWrite(13,LOW);　// clear
+    digitalWrite(13,LOW); // clear
 }
