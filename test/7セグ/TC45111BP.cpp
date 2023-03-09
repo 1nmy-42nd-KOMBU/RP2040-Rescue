@@ -1,9 +1,8 @@
 #include <Arduino.h>
-#include <Wire.h>
 //
 // 3桁の7セグメントLEDを光らせるプログラム
 //
-uint num_3digits = 256;
+int num_3digits = 256;
 
 void setup(){
     Serial.begin(115200);
@@ -12,7 +11,7 @@ void setup(){
         pinMode(i,OUTPUT);
         digitalWrite(i,LOW);
     }
-    for (int i=10; i<=12; i++){
+    for (int i=10; i<=13; i++){
         pinMode(i,OUTPUT);
         digitalWrite(i,HIGH);
     }
@@ -35,14 +34,16 @@ boolean Num_Array[11][4]={
 
 //LED表示
 void NumPrint(int number){
-    for (int i=21; i<=18; i--){
-       Serial.print(number);
-       Serial.print(",");
-       Serial.print(21-i);
-       Serial.print(",");
-       Serial.println(Num_Array[number][21-i]);
+    for (int i=21; i>=18; i--){
+//       Serial.print(number);
+//       Serial.print(",");
+//       Serial.print(21-i);
+//       Serial.print(",");
+//       Serial.println(Num_Array[number][21-i]);
         digitalWrite(i,Num_Array[number][21-i]);
     }
+    digitalWrite(13,HIGH);
+    delayMicroseconds(10); // 明るくするためにちょっと待ったげる
 }
 
 void loop(){
@@ -56,19 +57,19 @@ void loop(){
     digitalWrite(11,HIGH);
     digitalWrite(12,LOW);
     NumPrint(num_3digits / 100);
-    NumPrint(10);
+    digitalWrite(13,LOW);　// clear
 
     // 2桁目
     digitalWrite(10,HIGH);
     digitalWrite(11,LOW);
     digitalWrite(12,HIGH);
     NumPrint(num_3digits % 100 / 10);
-    NumPrint(10);
+    digitalWrite(13,LOW);　// clear
 
     // 1桁目
     digitalWrite(10,LOW);
     digitalWrite(11,HIGH);
     digitalWrite(12,HIGH);
     NumPrint(num_3digits % 10);
-    NumPrint(10);
+    digitalWrite(13,LOW);　// clear
 }
