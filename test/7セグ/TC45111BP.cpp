@@ -2,19 +2,19 @@
 //
 // 3桁の7セグメントLEDを光らせるプログラム
 //
+#define BI_pin 7
+
 int num_3digits = 769;
 
 void setup(){
     Serial.begin(115200);
     //1～10番ピン　デジタル出力へセット
-    for (int i=18; i<=21; i++){
+    for (int i=0; i<=6; i++){
         pinMode(i,OUTPUT);
         digitalWrite(i,LOW);
     }
-    for (int i=10; i<=13; i++){
-        pinMode(i,OUTPUT);
-        digitalWrite(i,HIGH);
-    }
+    pinMode(BI_pin,OUTPUT);
+    digitalWrite(BI_pin,HIGH);
 }
 //LEDレイアウトを定義
 boolean Num_Array[11][4]={
@@ -34,15 +34,15 @@ boolean Num_Array[11][4]={
 
 //LED表示
 void NumPrint(int number){
-    for (int i=21; i>=18; i--){
+    for (int i=0; i<=3; i++){
 //       Serial.print(number);
 //       Serial.print(",");
 //       Serial.print(21-i);
 //       Serial.print(",");
 //       Serial.println(Num_Array[number][21-i]);
-        digitalWrite(i,Num_Array[number][21-i]);
+        digitalWrite(i,Num_Array[number][i]);
     }
-    digitalWrite(13,HIGH);
+    digitalWrite(BI_pin,HIGH);
     delayMicroseconds(10); // 明るくするためにちょっと待ったげる
 }
 
@@ -53,23 +53,23 @@ void loop(){
     }
 
     // 3桁目
-    digitalWrite(10,HIGH);
-    digitalWrite(11,HIGH);
-    digitalWrite(12,LOW);
+    digitalWrite(4,HIGH);
+    digitalWrite(5,HIGH);
+    digitalWrite(6,LOW);
     NumPrint(num_3digits / 100);
-    digitalWrite(13,LOW); // clear
+    digitalWrite(BI_pin,LOW); // clear
 
     // 2桁目
-    digitalWrite(10,HIGH);
-    digitalWrite(11,LOW);
-    digitalWrite(12,HIGH);
+    digitalWrite(4,HIGH);
+    digitalWrite(5,LOW);
+    digitalWrite(6,HIGH);
     NumPrint(num_3digits % 100 / 10);
-    digitalWrite(13,LOW);// clear
+    digitalWrite(BI_pin,LOW);// clear
 
     // 1桁目
-    digitalWrite(10,LOW);
-    digitalWrite(11,HIGH);
-    digitalWrite(12,HIGH);
+    digitalWrite(4,LOW);
+    digitalWrite(5,HIGH);
+    digitalWrite(6,HIGH);
     NumPrint(num_3digits % 10);
-    digitalWrite(13,LOW); // clear
+    digitalWrite(BI_pin,LOW); // clear
 }
