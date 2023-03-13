@@ -1,21 +1,33 @@
 #include <Arduino.h>
-#include <Wire.h>
 //
 // 3桁の7セグメントLEDを光らせるプログラム
 //
-uint num_3digits = 256;
+#define BI_pin 7
 
-void setup(){
-    Serial.begin(115200);
+int num_3digits = 769;
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(25, OUTPUT);
+  delay(3000);
+  Serial.printf("core1:start....\n");
+}
+
+void loop() {
+  digitalWrite(25, HIGH);
+  delay(100);
+  digitalWrite(25, LOW);
+  delay(900);
+}
+
+void setup1(){
     //1～10番ピン　デジタル出力へセット
-    for (int i=18; i<=21; i++){
+    for (int i=0; i<=6; i++){
         pinMode(i,OUTPUT);
         digitalWrite(i,LOW);
     }
-    for (int i=10; i<=12; i++){
-        pinMode(i,OUTPUT);
-        digitalWrite(i,HIGH);
-    }
+    pinMode(BI_pin,OUTPUT);
+    digitalWrite(BI_pin,HIGH);
 }
 //LEDレイアウトを定義
 boolean Num_Array[11][4]={
@@ -35,40 +47,42 @@ boolean Num_Array[11][4]={
 
 //LED表示
 void NumPrint(int number){
-    for (int i=21; i<=18; i--){
-       Serial.print(number);
-       Serial.print(",");
-       Serial.print(21-i);
-       Serial.print(",");
-       Serial.println(Num_Array[number][21-i]);
-        digitalWrite(i,Num_Array[number][21-i]);
+    for (int i=0; i<=3; i++){
+//       Serial.print(number);
+//       Serial.print(",");
+//       Serial.print(21-i);
+//       Serial.print(",");
+//       Serial.println(Num_Array[number][21-i]);
+        digitalWrite(i,Num_Array[number][i]);
     }
+    digitalWrite(BI_pin,HIGH);
+    delayMicroseconds(10); // 明るくするためにちょっと待ったげる
 }
 
-void loop(){
+void loop1(){
     // 4桁以上だったら999に抑える
     if (num_3digits >= 1000){
         num_3digits = 999;
     }
 
     // 3桁目
-    digitalWrite(10,HIGH);
-    digitalWrite(11,HIGH);
-    digitalWrite(12,LOW);
+    digitalWrite(4,HIGH);
+    digitalWrite(5,HIGH);
+    digitalWrite(6,LOW);
     NumPrint(num_3digits / 100);
-    NumPrint(10);
+    digitalWrite(BI_pin,LOW); // clear
 
     // 2桁目
-    digitalWrite(10,HIGH);
-    digitalWrite(11,LOW);
-    digitalWrite(12,HIGH);
+    digitalWrite(4,HIGH);
+    digitalWrite(5,LOW);
+    digitalWrite(6,HIGH);
     NumPrint(num_3digits % 100 / 10);
-    NumPrint(10);
+    digitalWrite(BI_pin,LOW);// clear
 
     // 1桁目
-    digitalWrite(10,LOW);
-    digitalWrite(11,HIGH);
-    digitalWrite(12,HIGH);
+    digitalWrite(4,LOW);
+    digitalWrite(5,HIGH);
+    digitalWrite(6,HIGH);
     NumPrint(num_3digits % 10);
-    NumPrint(10);
+    digitalWrite(BI_pin,LOW); // clear
 }
