@@ -34,7 +34,7 @@ void loop() {
   if (instruction[0] == 10){
     Serial1.write(10);
     Serial.println("received 10 and sent 10");
-  } else if(instruction[0] == 3){
+  } else if(instruction[0] == 3 && byte_count == 2){
     num_3digits = instruction[1] * 256 + instruction[2];
   } else {
     Serial.print(instruction[0]);
