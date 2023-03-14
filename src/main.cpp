@@ -7,9 +7,6 @@
 #define BI_pin 7
 
 volatile uint num_3digits = 769;
-byte read_byte = 0x00;
-int byte_count = 0;
-uint8_t instruction[3] = {0,0,0};
 
 void setup() {
   Serial.begin(115200);
@@ -23,21 +20,20 @@ void setup() {
 
 void loop() {
   while (not Serial1.available()){}
-  read_byte = 0x00;
-  byte_count = 0;
-  while(1 < Wire.available()) // loop through all but the last
-  {
-    read_byte = Wire.read();     
-    instruction[byte_count] = read_byte;
-    byte_count++;
-  }
-  if (instruction[0] == 10){
+  uint8_t hoge = Serial1.read();
+  if (hoge == 10){
     Serial1.write(10);
     Serial.println("received 10 and sent 10");
-  } else if(instruction[0] == 3 && byte_count == 2){
-    num_3digits = instruction[1] * 256 + instruction[2];
+  } else if(hoge == 3){
+    Serial.println("change");
+    uint8_t num[2];
+    delay(1); // ここで遅延を挟んだげないと連続では読めない 理由は知らん
+    num[0] = Serial1.read();
+    num[1] = Serial1.read();
+    num_3digits = num[0] * 256 + num[1];
+    Serial.println(num_3digits);
   } else {
-    Serial.print(instruction[0]);
+    Serial.print(hoge);
     Serial.println(",not 10 was sent");
   }
 }
