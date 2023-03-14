@@ -1,23 +1,45 @@
 #include <Arduino.h>
+#include "HardwareSerial.h"
+#include <Wire.h>
 //
 // 3桁の7セグメントLEDを光らせるプログラム
 //
 #define BI_pin 7
 
-int num_3digits = 769;
+volatile uint num_3digits = 769;
+byte read_byte = 0x00;
+int byte_count = 0;
+uint8_t instruction[3] = {0,0,0};
 
 void setup() {
   Serial.begin(115200);
   pinMode(25, OUTPUT);
-  delay(3000);
-  Serial.printf("core1:start....\n");
+  Serial1.setRX(17);    // 標準設定以外の端子を使用する場合（UART0）
+  Serial1.setTX(16);
+  Serial1.begin(19200);
+  while(!Serial1); //wait untill it opens
+  Serial.println("start");
 }
 
 void loop() {
-  digitalWrite(25, HIGH);
-  delay(100);
-  digitalWrite(25, LOW);
-  delay(900);
+  while (not Serial1.available()){}
+  read_byte = 0x00;
+  byte_count = 0;
+  while(1 < Wire.available()) // loop through all but the last
+  {
+    read_byte = Wire.read();     
+    instruction[byte_count] = read_byte;
+    byte_count++;
+  }
+  if (instruction[0] == 10){
+    Serial1.write(10);
+    Serial.println("received 10 and sent 10");
+  } else if(instruction[0] == 3){
+    num_3digits = instruction[1] * 256 + instruction[2];
+  } else {
+    Serial.print(instruction[0]);
+    Serial.println(",not 10 was sent");
+  }
 }
 
 void setup1(){
