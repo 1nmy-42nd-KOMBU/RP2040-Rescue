@@ -111,11 +111,11 @@ void loop() {
     num[1] = Serial1.read();
     num_3digits = num[0] * 256 + num[1];
     Serial.println(num_3digits);
+  } else if(hoge == 2){
+    rescue();
   } else {
     Serial.print(hoge);
     Serial.println(",not 10 was sent");
-  } else if(hoge == 2){
-    rescue();
   }
 }
 
