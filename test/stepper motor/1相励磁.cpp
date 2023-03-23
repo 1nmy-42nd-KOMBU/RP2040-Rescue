@@ -9,7 +9,7 @@
 #define PIN3 20  // 黄
 #define PIN4 21  // オレンジ
  
-int tim = 2;  // STEPごとに停止する間隔(小さくすると回転スピードが上昇)
+int tim = 4;  // STEPごとに停止する間隔(小さくすると回転スピードが上昇)
  
 void setup(){
   
@@ -23,32 +23,34 @@ void setup(){
  
 void loop(){
  
-// STEP1
-  digitalWrite(PIN1, HIGH);
-  digitalWrite(PIN2, LOW);
-  digitalWrite(PIN3, LOW);
-  digitalWrite(PIN4, LOW);
-  delay(tim);
-  
-// STEP2
-  digitalWrite(PIN1, LOW);
-  digitalWrite(PIN2, HIGH);
-  digitalWrite(PIN3, LOW);
-  digitalWrite(PIN4, LOW);
-  delay(tim);
-  
-// STEP3
-  digitalWrite(PIN1, LOW);
-  digitalWrite(PIN2, LOW);
-  digitalWrite(PIN3, HIGH);
-  digitalWrite(PIN4, LOW);
-  delay(tim);
-  
-// STEP4
-  digitalWrite(PIN1, LOW);
-  digitalWrite(PIN2, LOW);
-  digitalWrite(PIN3, LOW);
-  digitalWrite(PIN4, HIGH);
-  delay(tim);
- 
+  for (int i = 1; i <= 2048/4*90/360; i = i + 1){// 90度まわす// 入れる向き
+  // STEP1
+    digitalWrite(PIN1, HIGH);
+    digitalWrite(PIN2, LOW);
+    digitalWrite(PIN3, LOW);
+    digitalWrite(PIN4, LOW);
+    delay(tim);
+    
+  // STEP2
+    digitalWrite(PIN1, LOW);
+    digitalWrite(PIN2, HIGH);
+    digitalWrite(PIN3, LOW);
+    digitalWrite(PIN4, LOW);
+    delay(tim);
+    
+  // STEP3
+    digitalWrite(PIN1, LOW);
+    digitalWrite(PIN2, LOW);
+    digitalWrite(PIN3, HIGH);
+    digitalWrite(PIN4, LOW);
+    delay(tim);
+    
+  // STEP4
+    digitalWrite(PIN1, LOW);
+    digitalWrite(PIN2, LOW);
+    digitalWrite(PIN3, LOW);
+    digitalWrite(PIN4, HIGH);
+    delay(tim);
+  }
+  delay(1000);
 }
