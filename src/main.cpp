@@ -21,6 +21,13 @@ byte vl_right_address = 0x11; // 左のVLのアドレスは0x10
 
 volatile uint num_3digits = 769;
 
+#define PIN1 18  // 青
+#define PIN2 19  // ピンク
+#define PIN3 20  // 黄
+#define PIN4 21  // オレンジ
+
+int tim = 4;  // STEPごとに停止する間隔(小さくすると回転スピードが上昇)
+
 void setup() {
   Serial.begin(115200);
   pinMode(25, OUTPUT); // LED pin
@@ -94,6 +101,12 @@ void setup() {
   // reduce timing budget to 20 ms (default is about 33 ms)
   sensor.setMeasurementTimingBudget(20000);
   // ================================================================================
+  
+  pinMode(PIN1, OUTPUT);  // デジタルピンを出力に設定
+  pinMode(PIN2, OUTPUT);
+  pinMode(PIN3, OUTPUT);
+  pinMode(PIN4, OUTPUT);
+
   Serial.println("start");
 }
 
@@ -286,4 +299,33 @@ void vlxReset()
 
   // reduce timing budget to 20 ms (default is about 33 ms)
   sensor.setMeasurementTimingBudget(20000);
+}
+
+void open(void){
+  for (int i = 1; i <= 2048/4*90/360; i = i + 1){// 90度まわす// 入れる向き
+  // STEP4
+    digitalWrite(PIN1, LOW);
+    digitalWrite(PIN2, LOW);
+    digitalWrite(PIN3, LOW);
+    digitalWrite(PIN4, HIGH);
+    delay(tim);
+  // STEP3
+    digitalWrite(PIN1, LOW);
+    digitalWrite(PIN2, LOW);
+    digitalWrite(PIN3, HIGH);
+    digitalWrite(PIN4, LOW);
+    delay(tim);
+  // STEP2
+    digitalWrite(PIN1, LOW);
+    digitalWrite(PIN2, HIGH);
+    digitalWrite(PIN3, LOW);
+    digitalWrite(PIN4, LOW);
+    delay(tim);
+  // STEP1
+    digitalWrite(PIN1, HIGH);
+    digitalWrite(PIN2, LOW);
+    digitalWrite(PIN3, LOW);
+    digitalWrite(PIN4, LOW);
+    delay(tim);
+  }
 }
