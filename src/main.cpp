@@ -31,11 +31,11 @@ int tim = 4;  // STEPごとに停止する間隔(小さくすると回転スピ�
 void setup() {
   Serial.begin(115200);
   pinMode(25, OUTPUT); // LED pin
-  Serial1.setRX(17);    // 標準設定以外の端子を使用する場合（UART0）
-  Serial1.setTX(16);
-  Serial1.begin(19200);
-  while(!Serial1); //wait untill it opens
-  
+=======
+
+void setup()
+{
+  Serial.begin(115200);
   // ================================================================================
   Wire.setSDA(12);
   Wire.setSCL(13);
